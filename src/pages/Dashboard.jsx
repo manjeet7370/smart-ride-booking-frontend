@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../config"; // 👈 add this
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Dashboard() {
   const handleStartRide = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/ride/start",
+        `${BASE_URL}/ride/start`,
         {},
         {
           headers: {
@@ -26,7 +27,7 @@ function Dashboard() {
       setRideId(res.data._id);
       alert("Ride started");
 
-      fetchRides(); // refresh list
+      fetchRides();
 
     } catch (err) {
       alert("Start failed");
@@ -42,7 +43,7 @@ function Dashboard() {
 
     try {
       await axios.post(
-        `http://localhost:5000/ride/end/${rideId}`,
+        `${BASE_URL}/ride/end/${rideId}`,
         {},
         {
           headers: {
@@ -54,7 +55,7 @@ function Dashboard() {
       alert("Ride ended");
       setRideId("");
 
-      fetchRides(); // refresh list
+      fetchRides();
 
     } catch (err) {
       alert("End failed");
@@ -65,7 +66,7 @@ function Dashboard() {
   const fetchRides = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/ride/history",
+        `${BASE_URL}/ride/history`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -82,7 +83,11 @@ function Dashboard() {
 
   // load on start
   useEffect(() => {
-    fetchRides();
+    if (!token) {
+      navigate("/");
+    } else {
+      fetchRides();
+    }
   }, []);
 
   // logout
@@ -95,7 +100,6 @@ function Dashboard() {
     <div style={{ padding: "20px" }}>
       <h2>Dashboard</h2>
 
-      {/* buttons */}
       <button onClick={handleStartRide}>Start Ride</button>
 
       <br /><br />
@@ -108,7 +112,6 @@ function Dashboard() {
 
       <hr />
 
-      {/* history */}
       <h3>Ride History</h3>
 
       {rides.length === 0 ? (

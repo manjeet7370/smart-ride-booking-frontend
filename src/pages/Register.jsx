@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import BASE_URL from "../config"; // 👈 add this
 
 function Register() {
   const navigate = useNavigate();
@@ -9,7 +10,6 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // 🔐 already login hai toh dashboard bhej
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -21,7 +21,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/auth/register", {
+      await axios.post(`${BASE_URL}/auth/register`, {
         name,
         email,
         password
