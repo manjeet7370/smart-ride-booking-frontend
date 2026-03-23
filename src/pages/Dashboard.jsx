@@ -26,7 +26,8 @@ function Dashboard() {
       setRideId(res.data._id);
       alert("Ride started");
 
-      fetchRides();
+      fetchRides(); // refresh list
+
     } catch (err) {
       alert("Start failed");
     }
@@ -53,7 +54,8 @@ function Dashboard() {
       alert("Ride ended");
       setRideId("");
 
-      fetchRides();
+      fetchRides(); // refresh list
+
     } catch (err) {
       alert("End failed");
     }
@@ -72,23 +74,18 @@ function Dashboard() {
       );
 
       setRides(res.data);
+
     } catch (err) {
       console.log("error fetching rides");
     }
   };
 
-  // 🔐 check token + load rides
+  // load on start
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      navigate("/");
-    }
-
     fetchRides();
   }, []);
 
-  // 🚪 logout
+  // logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -99,13 +96,13 @@ function Dashboard() {
       <h2>Dashboard</h2>
 
       {/* buttons */}
-      <button style={{ marginRight: "10px" }} onClick={handleStartRide}>
-        Start Ride
-      </button>
+      <button onClick={handleStartRide}>Start Ride</button>
 
-      <button style={{ marginRight: "10px" }} onClick={handleEndRide}>
-        End Ride
-      </button>
+      <br /><br />
+
+      <button onClick={handleEndRide}>End Ride</button>
+
+      <br /><br />
 
       <button onClick={handleLogout}>Logout</button>
 
@@ -121,10 +118,9 @@ function Dashboard() {
           <div
             key={ride._id}
             style={{
-              border: "1px solid #ddd",
+              border: "1px solid #ccc",
               margin: "10px 0",
-              padding: "10px",
-              borderRadius: "6px"
+              padding: "10px"
             }}
           >
             <p>Status: {ride.status}</p>
