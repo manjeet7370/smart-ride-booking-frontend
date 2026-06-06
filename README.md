@@ -57,7 +57,7 @@ A full-stack ride-booking platform built with React, Node.js, Express, and Mongo
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/smart-ride-booking.git
+git clone https://github.com/manjeet7370/smart-ride-booking.git
 cd smart-ride-booking
 ```
 
